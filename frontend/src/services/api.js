@@ -29,12 +29,15 @@ function getToken() {
 
 async function request(method, path, body = null) {
   const url = `${API_BASE}${path}`;
-  const headers = { 'Content-Type': 'application/json' };
+  const headers = {};
   const token = getToken();
   if (token) headers.Authorization = `Bearer ${token}`;
 
   const opts = { method, headers, cache: 'no-store' };
-  if (body) opts.body = JSON.stringify(body);
+  if (body) {
+    headers['Content-Type'] = 'application/json';
+    opts.body = JSON.stringify(body);
+  }
 
   debugLog('[API][REQUEST]', { method, url, hasToken: Boolean(token), body });
 
