@@ -18,6 +18,19 @@
 ### 1. Chuẩn bị Môi trường
 * Hãy đảm bảo bạn đã cài đặt sẵn **Node.js** (v18 trở lên).
 * Một chuỗi kết nối (Connection String) của **MongoDB** (Hoặc xài bản Local mặc định). Trong repository này, mọi thứ đã nối sẵn với URL MongoDB mẫu trên Cloud (có thể sử dụng trực tiếp).
+* Dự án đã có sẵn file env mẫu để deploy nhanh:
+  * `backend/.env.example`
+  * `frontend/.env.example`
+
+Tạo file env thực tế từ file mẫu:
+
+```bash
+cd backend
+copy .env.example .env
+
+cd ..\frontend
+copy .env.example .env
+```
 
 ### 1.1 Đổi Link MongoDB
 Trong file [backend/.env](backend/.env), sửa biến `MONGODB_URI` sang database mới của bạn:
@@ -33,6 +46,12 @@ AUTO_SEED_ON_EMPTY=true
 Ghi chú:
 * `AUTO_SEED_ON_EMPTY=true`: Khi khởi động backend, nếu DB trống thì tự nạp dữ liệu mẫu.
 * Đặt `AUTO_SEED_ON_EMPTY=false` nếu bạn không muốn tự động seed.
+
+Trong file [frontend/.env](frontend/.env), cấu hình API backend:
+
+```env
+VITE_API_BASE_URL=http://localhost:5000/api
+```
 
 ### 1.2 Chuyển Dữ Liệu Từ MongoDB Cũ Sang MongoDB Mới
 Nếu muốn mang nguyên dữ liệu cũ sang link mới (không dùng dữ liệu mẫu), dùng MongoDB Database Tools:

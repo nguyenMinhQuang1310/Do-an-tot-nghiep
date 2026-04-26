@@ -1,4 +1,15 @@
-const API_BASE = 'http://localhost:5000/api';
+const resolveApiBase = () => {
+  const configured = import.meta.env.VITE_API_BASE_URL?.trim();
+  if (configured) return configured.replace(/\/+$/, '');
+
+  // Dev local fallback
+  if (import.meta.env.DEV) return 'http://localhost:5000/api';
+
+  // Production fallback: same origin backend
+  return `${window.location.origin}/api`;
+};
+
+const API_BASE = resolveApiBase();
 
 function getToken() {
   return localStorage.getItem('token');
