@@ -9,6 +9,8 @@ import Spinner from '../components/ui/Spinner';
 import EmptyState from '../components/ui/EmptyState';
 import './ProductListPage.css';
 
+const DEBUG_PRODUCTS = import.meta.env.DEV || import.meta.env.VITE_DEBUG_PRODUCTS === 'true';
+
 export default function ProductListPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [products, setProducts] = useState([]);
@@ -24,15 +26,39 @@ export default function ProductListPage() {
     sort: searchParams.get('sort') || 'newest',
   };
 
-  useEffect(() => { categoryService.getCategories().then(setCategories).catch(() => {}); }, []);
+  useEffect(() => {
+    categoryService.getCategories()
+      .then((data) => {
+        if (DEBUG_PRODUCTS) console.log('[ProductList][Categories][SUCCESS]', { count: data?.length || 0, data });
+        setCategories(data);
+      })
+      .catch((err) => {
+        if (DEBUG_PRODUCTS) console.error('[ProductList][Categories][ERROR]', err);
+      });
+  }, []);
 
   useEffect(() => {
     setLoading(true);
     const params = {};
     Object.entries(filters).forEach(([k, v]) => { if (v) params[k] = v; });
+
+    if (DEBUG_PRODUCTS) console.log('[ProductList][Products][REQUEST]', { filters, params });
+
     productService.getProducts(params)
-      .then((data) => { setProducts(data.products || []); setPagination(data.pagination || {}); })
-      .catch(() => {})
+      .then((data) => {
+        if (DEBUG_PRODUCTS) {
+          console.log('[ProductList][Products][SUCCESS]', {
+            productCount: data?.products?.length || 0,
+            pagination: data?.pagination,
+            raw: data,
+          });
+        }
+        setProducts(data.products || []);
+        setPagination(data.pagination || {});
+      })
+      .catch((err) => {
+        if (DEBUG_PRODUCTS) console.error('[ProductList][Products][ERROR]', err);
+      })
       .finally(() => setLoading(false));
   }, [searchParams.toString()]);
 

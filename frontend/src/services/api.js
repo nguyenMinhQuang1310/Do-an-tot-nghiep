@@ -13,12 +13,22 @@ const resolveApiBase = () => {
 };
 
 const API_BASE = resolveApiBase();
+const API_DEBUG = import.meta.env.DEV || import.meta.env.VITE_DEBUG_API === 'true';
+
+function debugLog(...args) {
+  if (API_DEBUG) console.log(...args);
+}
+
+function debugError(...args) {
+  if (API_DEBUG) console.error(...args);
+}
 
 function getToken() {
   return localStorage.getItem('token');
 }
 
 async function request(method, path, body = null) {
+  const url = `${API_BASE}${path}`;
   const headers = { 'Content-Type': 'application/json' };
   const token = getToken();
   if (token) headers.Authorization = `Bearer ${token}`;
@@ -26,20 +36,37 @@ async function request(method, path, body = null) {
   const opts = { method, headers, cache: 'no-store' };
   if (body) opts.body = JSON.stringify(body);
 
-  const res = await fetch(`${API_BASE}${path}`, opts);
+  debugLog('[API][REQUEST]', { method, url, hasToken: Boolean(token), body });
+
+  const res = await fetch(url, opts);
   const contentType = res.headers.get('content-type') || '';
 
+  debugLog('[API][RESPONSE]', { method, url, status: res.status, ok: res.ok, contentType });
+
   if (!contentType.includes('application/json')) {
+    const responseText = await res.text();
+    const preview = responseText.slice(0, 300);
+    debugError('[API][INVALID_CONTENT_TYPE]', {
+      method,
+      url,
+      status: res.status,
+      contentType,
+      preview,
+    });
     const error = new Error('API response is not JSON. Check VITE_API_BASE_URL and backend routing.');
     error.status = res.status;
+    error.debug = { method, url, status: res.status, contentType, preview };
     throw error;
   }
 
   const data = await res.json();
+  debugLog('[API][JSON]', { method, url, status: res.status, success: data?.success, message: data?.message });
 
   if (!res.ok || !data.success) {
+    debugError('[API][FAILED]', { method, url, status: res.status, response: data });
     const error = new Error(data.message || 'Có lỗi xảy ra');
     error.status = res.status;
+    error.debug = { method, url, status: res.status, response: data };
     throw error;
   }
 
