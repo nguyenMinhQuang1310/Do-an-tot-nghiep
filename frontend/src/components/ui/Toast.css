@@ -1,0 +1,6 @@
+.toast { padding: 12px 20px; border-radius: var(--radius-sm); color: white; font-size: var(--font-sm); font-weight: 500; animation: toastIn 0.3s ease; min-width: 280px; display: flex; justify-content: space-between; align-items: center; gap: var(--space-md); box-shadow: var(--shadow-lg); }
+.toast-success { background: #2E7D32; }
+.toast-error { background: #C62828; }
+.toast-close { background: none; border: none; color: rgba(255,255,255,0.7); cursor: pointer; font-size: 1.2rem; }
+.toast-close:hover { color: white; }
+@keyframes toastIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }

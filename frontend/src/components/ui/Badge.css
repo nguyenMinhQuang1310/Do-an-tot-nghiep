@@ -1,0 +1,11 @@
+.badge { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: var(--radius-full); font-size: var(--font-xs); font-weight: 600; text-transform: capitalize; }
+.badge-pending { background: var(--color-warning-bg); color: var(--color-warning); }
+.badge-confirmed { background: var(--color-info-bg); color: var(--color-info); }
+.badge-shipping { background: rgba(171,71,188,0.12); color: #AB47BC; }
+.badge-delivered { background: var(--color-success-bg); color: var(--color-success); }
+.badge-cancelled { background: var(--color-danger-bg); color: var(--color-danger); }
+.badge-paid { background: var(--color-success-bg); color: var(--color-success); }
+.badge-unpaid { background: var(--color-warning-bg); color: var(--color-warning); }
+.badge-active { background: var(--color-success-bg); color: var(--color-success); }
+.badge-inactive { background: var(--color-danger-bg); color: var(--color-danger); }
+.badge-draft { background: rgba(158,158,158,0.12); color: #9E9E9E; }

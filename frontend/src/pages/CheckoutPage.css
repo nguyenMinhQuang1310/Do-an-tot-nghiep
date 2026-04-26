@@ -1,0 +1,20 @@
+.checkout-page { padding: var(--space-xl) 0; }
+.checkout-grid { display: grid; grid-template-columns: 1fr 380px; gap: var(--space-xl); }
+.checkout-section { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-lg); margin-bottom: var(--space-md); }
+.checkout-section h2 { font-size: var(--font-md); font-weight: 600; margin-bottom: var(--space-md); }
+.address-list { display: flex; flex-direction: column; gap: var(--space-sm); }
+.address-option { display: flex; align-items: flex-start; gap: var(--space-sm); padding: var(--space-md); border: 1px solid var(--color-border); border-radius: var(--radius-sm); cursor: pointer; transition: border-color var(--transition-fast); }
+.address-option.selected { border-color: var(--color-primary); background: var(--color-primary-light); }
+.address-option input[type="radio"] { margin-top: 3px; accent-color: var(--color-primary); }
+.address-details { font-size: var(--font-sm); }
+.address-details strong { display: block; margin-bottom: 2px; }
+.address-details span { color: var(--color-text-muted); }
+.payment-options { display: flex; flex-direction: column; gap: var(--space-sm); }
+.payment-option { display: flex; align-items: center; gap: var(--space-sm); padding: 12px var(--space-md); border: 1px solid var(--color-border); border-radius: var(--radius-sm); cursor: pointer; font-size: var(--font-sm); transition: border-color var(--transition-fast); }
+.payment-option.selected { border-color: var(--color-primary); background: var(--color-primary-light); }
+.checkout-items { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-lg); }
+.checkout-item { display: flex; justify-content: space-between; padding: var(--space-sm) 0; font-size: var(--font-sm); border-bottom: 1px solid var(--color-border); }
+.checkout-item:last-child { border: none; }
+.checkout-total { display: flex; justify-content: space-between; font-size: var(--font-lg); font-weight: 700; padding-top: var(--space-md); border-top: 1px solid var(--color-border); margin-top: var(--space-sm); }
+.checkout-total span:last-child { color: var(--color-primary); }
+@media (max-width: 768px) { .checkout-grid { grid-template-columns: 1fr; } }
