@@ -23,7 +23,7 @@ async function request(method, path, body = null) {
   const token = getToken();
   if (token) headers.Authorization = `Bearer ${token}`;
 
-  const opts = { method, headers };
+  const opts = { method, headers, cache: 'no-store' };
   if (body) opts.body = JSON.stringify(body);
 
   const res = await fetch(`${API_BASE}${path}`, opts);
