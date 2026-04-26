@@ -1,6 +1,9 @@
 const resolveApiBase = () => {
   const configured = import.meta.env.VITE_API_BASE_URL?.trim();
-  if (configured) return configured.replace(/\/+$/, '');
+  if (configured) {
+    const normalized = configured.replace(/\/+$/, '');
+    return /\/api$/i.test(normalized) ? normalized : `${normalized}/api`;
+  }
 
   // Dev local fallback
   if (import.meta.env.DEV) return 'http://localhost:5000/api';
@@ -24,9 +27,17 @@ async function request(method, path, body = null) {
   if (body) opts.body = JSON.stringify(body);
 
   const res = await fetch(`${API_BASE}${path}`, opts);
+  const contentType = res.headers.get('content-type') || '';
+
+  if (!contentType.includes('application/json')) {
+    const error = new Error('API response is not JSON. Check VITE_API_BASE_URL and backend routing.');
+    error.status = res.status;
+    throw error;
+  }
+
   const data = await res.json();
 
-  if (!data.success) {
+  if (!res.ok || !data.success) {
     const error = new Error(data.message || 'Có lỗi xảy ra');
     error.status = res.status;
     throw error;
