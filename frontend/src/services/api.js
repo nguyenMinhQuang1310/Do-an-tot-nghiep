@@ -53,7 +53,10 @@ async function request(method, path, body = null) {
       contentType,
       preview,
     });
-    const error = new Error('API response is not JSON. Check VITE_API_BASE_URL and backend routing.');
+    const nonJsonMessage = res.status === 405
+      ? 'API trả về 405 Method Not Allowed (thường do VITE_API_BASE_URL đang trỏ vào frontend static domain).'
+      : 'API response is not JSON. Check VITE_API_BASE_URL and backend routing.';
+    const error = new Error(nonJsonMessage);
     error.status = res.status;
     error.debug = { method, url, status: res.status, contentType, preview };
     throw error;
