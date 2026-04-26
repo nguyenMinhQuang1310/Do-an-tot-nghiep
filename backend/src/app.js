@@ -40,6 +40,10 @@ app.options(/.*/, cors(corsOptions));
 app.use(express.json());
 
 // ─── Health Check ───
+app.get('/', (req, res) => {
+  res.status(200).json({ success: true, message: 'Fashion Store Backend is running' });
+});
+
 app.get('/api/health', (req, res) => {
   res.json({ success: true, message: 'Fashion Store API is running' });
 });
