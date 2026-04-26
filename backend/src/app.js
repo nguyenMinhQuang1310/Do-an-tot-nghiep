@@ -36,7 +36,7 @@ const corsOptions = {
 
 // ─── Global Middlewares ───
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
+app.options(/.*/, cors(corsOptions));
 app.use(express.json());
 
 // ─── Health Check ───
